@@ -8,7 +8,8 @@
 
 %dataFile is a txt file for BITalino measurements
 %sr is sample rate, stime is start time(seconds), etime is end time(seconds)
-%format = 1 is for experimental data, format = 2 is for accelerometer calibration data
+%format depends on the order that the boards were connected to Opensignals
+%as well as which board was connected to which electrodes. 
 
 function [acc,emg1,emg2,time]=loadData(dataFile,sr,stime,etime,format)
 
@@ -20,6 +21,10 @@ elseif format==2
     col_acc=13;
     col_emg1=6;
     col_emg2=12;
+elseif format==3
+    col_acc=7;
+    col_emg1=6;
+    col_emg2=13;
 else
     ME = MException('Invalid format parameter');
     throw(ME);

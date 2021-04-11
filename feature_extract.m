@@ -1,7 +1,7 @@
 %Alex Yeh 4/7/2021
 %Project Final Report
 
-%feature extraction
+%Performsfeature extraction on raw BITalino measurements
 
 %output is separate txt file for further processing
 
@@ -12,13 +12,18 @@ group=append(subject,"_",num2str(num));
 sr=1000;
 stime=0;
 etime=10;
-format=1;%depends on which order the bitalinos were connected
+
+if (subject=="m")
+    format=3;
+else
+    format=1;%depends on which order the bitalinos were connected
+end
 
 %intended angles to try
-
 int_ang=[-80:20:80];
 
-%no f80 in group 2 due to physical limitations
+%no f80 in unnas group 2 due to physical limitations
+%e80-b in maxim group 3 file got lost
 if num==2
     int_ang=int_ang(2:end);
 end
@@ -52,13 +57,22 @@ fprintf(fid,'#trial\t angle\t calculated angle\t flexion power\t extension power
 [b2,a2] = butter(4,[179.5/(sr/2) 180.5/(sr/2)],'stop');
 
 
-
 %experimental data
 for t=1:length(trials)
     for ia=1:length(int_ang)
         
         %hard coded file paths
-        datafile=append(group,"/",group,trials(t),"_",ending(ia));
+        datafile=append(subject,"/",group,"/",group,trials(t),"_",ending(ia));
+        
+        %check for valid file, skip if necessary
+        f=fopen(datafile);
+        if (f==-1)
+            break;
+        else
+            fclose(f);
+        end
+        
+        %load data
         [acc,f_emg,e_emg,~]=loadData(datafile,sr,stime,etime,format);
         [acc,f_emg,e_emg]=calibrateData(acc,f_emg,e_emg,gval,gzero);
         
@@ -83,7 +97,6 @@ for t=1:length(trials)
             otherwise
                 throw("invalid group number");
         end
-                
                 
         %filter out power line noise
         f_emg=filtfilt(b2,a2,filtfilt(b,a,f_emg));

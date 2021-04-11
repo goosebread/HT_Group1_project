@@ -13,6 +13,3 @@ emg1=adcTomV(r_emg1);
 emg2=adcTomV(r_emg2);
 
 end
-
-
-
