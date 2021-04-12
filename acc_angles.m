@@ -3,9 +3,10 @@
 
 %testing script
 
+%data files must be changed manually
+
 %goal:
-%get angles - intended angle, photo angle, acc calibrated angle
-%need photo angle data still
+%get angles - intended angle, acc calibrated angle
 
 %plots accelerometer measured angle vs intended angle
 %manual correction is used for flexion angle signs (negative)
