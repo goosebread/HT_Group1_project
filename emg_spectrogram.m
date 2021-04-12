@@ -7,6 +7,11 @@
 %at various hand angles. Good for visualizing the data
 
 try
+    
+subject=    
+    group=
+    trial=
+    
 %sample rate
 sr=1000;
 
